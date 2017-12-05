@@ -76,7 +76,7 @@ export default function withJob(config) {
 
         this.setState({
           data: result ? result.data : null,
-          error: null,
+          error: result ? result.error : null,
           completed: result != null,
           workingProps: null,
         })
@@ -156,6 +156,10 @@ export default function withJob(config) {
                 console.warn('Failed to resolve job')
                 // eslint-disable-next-line no-console
                 console.warn(error)
+
+                if (this.context.jobs) {
+                  this.context.jobs.register(id, {error: {message: error.message, stack: error.stack}})
+                }
               }
               // Ensures asyncBootstrap stops
               return false
