@@ -16,6 +16,7 @@ export default function withJob(config) {
     ErrorComponent,
     serverMode = 'resolve',
     shouldWorkAgain = neverWorkAgain,
+    shouldLoadingAgain = false,
   } = config
 
   if (typeof work !== 'function') {
@@ -111,7 +112,11 @@ export default function withJob(config) {
       resolveWork = (props) => {
         let workDefinition
 
-        this.setState({ completed: false, data: null, error: null, workingProps: props })
+        this.setState(
+          !shouldLoadingAgain && this.state && this.state.completed
+            ? { ...this.state, workingProps: props }
+            : { completed: false, data: null, error: null, workingProps: props }
+          )
 
         try {
           workDefinition = work(props)

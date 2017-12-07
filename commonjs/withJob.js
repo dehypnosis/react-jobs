@@ -46,7 +46,9 @@ function withJob(config) {
       _config$serverMode = config.serverMode,
       serverMode = _config$serverMode === undefined ? 'resolve' : _config$serverMode,
       _config$shouldWorkAga = config.shouldWorkAgain,
-      shouldWorkAgain = _config$shouldWorkAga === undefined ? neverWorkAgain : _config$shouldWorkAga;
+      shouldWorkAgain = _config$shouldWorkAga === undefined ? neverWorkAgain : _config$shouldWorkAga,
+      _config$shouldLoading = config.shouldLoadingAgain,
+      shouldLoadingAgain = _config$shouldLoading === undefined ? false : _config$shouldLoading;
 
 
   if (typeof work !== 'function') {
@@ -172,7 +174,7 @@ function withJob(config) {
       this.resolveWork = function (props) {
         var workDefinition = void 0;
 
-        _this2.setState({ completed: false, data: null, error: null, workingProps: props });
+        _this2.setState(!shouldLoadingAgain && _this2.state && _this2.state.completed ? _extends({}, _this2.state, { workingProps: props }) : { completed: false, data: null, error: null, workingProps: props });
 
         try {
           workDefinition = work(props);
