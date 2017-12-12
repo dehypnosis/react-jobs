@@ -335,6 +335,7 @@ function withJob(config) {
         try {
           workDefinition = work(props);
         } catch (error) {
+          console.warn(error);
           _this2.setState({ completed: true, error: error, workingProps: null });
           // Ensures asyncBootstrap stops
           return false;
@@ -353,6 +354,8 @@ function withJob(config) {
             // Ensures asyncBootstrap continues
             return true;
           }).catch(function (error) {
+            console.warn(error);
+
             if (_this2.unmounted || _this2.state.workingProps !== props) {
               return undefined;
             }
@@ -364,12 +367,6 @@ function withJob(config) {
               }, 16);
             } else {
               // node
-              // We will at least log the error so that user isn't completely
-              // unaware of an error occurring.
-              // eslint-disable-next-line no-console
-              console.warn('Failed to resolve job');
-              // eslint-disable-next-line no-console
-              console.warn(error);
 
               if (_this2.context.jobs) {
                 _this2.context.jobs.register(id, { error: { message: error.message, stack: error.stack } });
